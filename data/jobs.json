@@ -1,0 +1,68 @@
+[
+  {
+    "id": "job1",
+    "title": "Software Engineer",
+    "department": "Engineering",
+    "location": "Remote",
+    "type": "Full-time",
+    "description": "Looking for experienced software engineer with React and Node.js skills",
+    "requirements": [
+      "5+ years experience",
+      "React",
+      "Node.js",
+      "TypeScript"
+    ],
+    "salary": "$80,000 - $120,000",
+    "postedDate": "2026-07-15T22:16:24.891Z",
+    "status": "active"
+  },
+  {
+    "id": "job2",
+    "title": "Data Analyst",
+    "department": "Analytics",
+    "location": "New York",
+    "type": "Full-time",
+    "description": "Data analyst needed for business intelligence and reporting",
+    "requirements": [
+      "Python",
+      "SQL",
+      "Tableau",
+      "Statistics"
+    ],
+    "salary": "$70,000 - $100,000",
+    "postedDate": "2026-07-15T22:16:24.893Z",
+    "status": "active"
+  },
+  {
+    "id": "job3",
+    "title": "Product Manager",
+    "department": "Product",
+    "location": "San Francisco",
+    "type": "Full-time",
+    "description": "Product manager to lead our SaaS product development",
+    "requirements": [
+      "5+ years PM experience",
+      "Agile",
+      "SaaS",
+      "Technical background"
+    ],
+    "salary": "$100,000 - $150,000",
+    "postedDate": "2026-07-15T22:16:24.893Z",
+    "status": "active"
+  },
+  {
+    "id": "job_1784329755184",
+    "title": "IT Engineering",
+    "department": "IT, Computer Science",
+    "location": "Kamgbunli",
+    "type": "Full-time",
+    "description": "troubleshooting",
+    "requirements": [
+      "Python",
+      "react"
+    ],
+    "postedDate": "2026-07-17T23:09:15.184Z",
+    "postedBy": "HarunaRama",
+    "status": "active"
+  }
+]

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "1784161197972",
+    "userId": "1784155827048",
+    "jobId": "manual_1784161197946",
+    "position": "IT Officer",
+    "fullName": "Abdulai Haruna Kwasi",
+    "email": "abdulai.haruna.kwasi.stu@uenr.edu.gh",
+    "phone": "0551108145",
+    "experience": "0",
+    "skills": "python,Excel",
+    "coverLetter": "i hv good experience on that",
+    "cvFile": {
+      "filename": "cv-1784161197966-103150921.docx",
+      "originalName": "Generous ERP.docx",
+      "path": "/uploads/cvs/cv-1784161197966-103150921.docx",
+      "size": 410227,
+      "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    },
+    "appliedDate": "2026-07-16T00:19:57.972Z",
+    "status": "hired",
+    "createdAt": "2026-07-16T00:19:57.972Z",
+    "statusUpdatedBy": "HarunaRama",
+    "statusUpdatedAt": "2026-07-18T00:46:13.168Z",
+    "interviewScheduled": "2026-07-19T10:00",
+    "interviewType": "Online"
+  },
+  {
+    "id": "1784330308985",
+    "userId": "1784330265595",
+    "jobId": "job_1784329755184",
+    "position": "IT Engineering",
+    "fullName": "Abdulai Mariam Adwoba",
+    "email": "harunabdulai11@gmail.com",
+    "phone": "0551108145",
+    "experience": 0,
+    "skills": [
+      "Python",
+      "react"
+    ],
+    "coverLetter": "im good in",
+    "cvFile": {
+      "filename": "cv-1784330308981-296962567.pdf",
+      "originalName": "ANKAMAH JOYCE YEBOAH.pdf",
+      "path": "/uploads/cvs/cv-1784330308981-296962567.pdf",
+      "size": 79212,
+      "mimetype": "application/pdf"
+    },
+    "appliedDate": "2026-07-17T23:18:28.985Z",
+    "status": "shortlisted",
+    "createdAt": "2026-07-17T23:18:28.985Z",
+    "statusUpdatedBy": "HarunaRama",
+    "statusUpdatedAt": "2026-07-18T00:43:10.823Z",
+    "interviewScheduled": "2026-07-18T10:00",
+    "interviewType": "Online"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "name": "hr-module-system",
+  "version": "3.0.0",
+  "description": "HR Module System with User Roles",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.6",
+    "cors": "^2.8.6",
+    "express": "^4.22.2",
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^1.4.5-lts.2",
+    "nodemailer": "^9.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

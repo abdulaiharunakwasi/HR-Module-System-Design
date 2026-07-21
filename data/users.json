@@ -1,0 +1,54 @@
+[
+  {
+    "id": "1784153219643",
+    "username": "Haruna",
+    "email": "harunabdulai11@gmail.com",
+    "password": "$2a$10$9EVW5ykkaQW.I6g411XuHuISqW6Q0MryBgjasqt.Xd8yrWKFUr3D.",
+    "role": "hr",
+    "createdAt": "2026-07-15T22:06:59.643Z"
+  },
+  {
+    "id": "1784154823717",
+    "username": "HarunaKwasi",
+    "email": "harunabdulai90@gmail.com",
+    "password": "$2a$10$7AVFoYDzmHj0KNAxp.wgA.pbZmaHI1sQJlA.9Qx8mlKkUiGfgvRUK",
+    "role": "hr",
+    "fullName": "Abdulai Haruna",
+    "phone": "0551108145",
+    "createdAt": "2026-07-15T22:33:43.717Z",
+    "updatedAt": "2026-07-15T22:33:43.717Z"
+  },
+  {
+    "id": "1784155827048",
+    "username": "abdulai",
+    "email": "abdulai.haruna.kwasi.stu@uenr.edu.gh",
+    "password": "$2a$10$yD48Su/DaxypxUz/0CYtrueKw1Tl37kBlLXTFkOoAV129qUstuxQC",
+    "role": "candidate",
+    "fullName": "Abdulai Haruna",
+    "phone": "0551108145",
+    "createdAt": "2026-07-15T22:50:27.048Z",
+    "updatedAt": "2026-07-15T22:50:27.048Z"
+  },
+  {
+    "id": "1784161326305",
+    "username": "HarunaRama",
+    "email": "harunabdulai913@gmail.com",
+    "password": "$2a$10$8LQd2yxZhtvfZd06vUlVOuYFE2ePw89JqG3X6bDhMbT34.4smcpoe",
+    "role": "hr",
+    "fullName": "Kwasi Haruna",
+    "phone": "0551108145",
+    "createdAt": "2026-07-16T00:22:06.305Z",
+    "updatedAt": "2026-07-16T00:22:06.305Z"
+  },
+  {
+    "id": "1784330265595",
+    "username": "mariam",
+    "email": "harunabdulai12@gmail.com",
+    "password": "$2a$10$Vg..MY8BwDb21LO2Lb4Pye.6HLf8yPNqFIA8ALclflVVbZIJKPv1m",
+    "role": "candidate",
+    "fullName": "Abdulai Mariam Adwoba",
+    "phone": "0551108145",
+    "createdAt": "2026-07-17T23:17:45.595Z",
+    "updatedAt": "2026-07-17T23:17:45.595Z"
+  }
+]
