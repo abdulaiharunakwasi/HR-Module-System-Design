@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
-const SECRET_KEY = 'your-secret-key-change-this-in-production';
+// Use environment variable for SECRET_KEY in production
+const SECRET_KEY = process.env.JWT_SECRET || 'hr-module-system-secret-key-2024';
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 

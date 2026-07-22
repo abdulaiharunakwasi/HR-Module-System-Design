@@ -7,7 +7,7 @@ const multer = require('multer');
 const auth = require('./auth');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // ============ MULTER CONFIGURATION ============
 const storage = multer.diskStorage({
@@ -40,17 +40,20 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-// Middleware
+// ============ CORS MIDDLEWARE - UPDATED FOR RENDER ============
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
+    origin: ['http://localhost:3000', 'https://hr-module-system.onrender.com'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, '..')));
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
-// Data file paths
+// ============ DATA FILE PATHS ============
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const APPLICANTS_FILE = path.join(DATA_DIR, 'applicants.json');
 const SHORTLISTED_FILE = path.join(DATA_DIR, 'shortlisted.json');
@@ -384,7 +387,7 @@ app.delete('/api/applicants/:id', auth.authenticate, auth.isHR, (req, res) => {
     res.json({ message: 'Applicant deleted successfully' });
 });
 
-// ============ UPDATE APPLICANT STATUS - FIXED ============
+// ============ UPDATE APPLICANT STATUS ============
 app.put('/api/applicants/:id/status', auth.authenticate, auth.isHR, (req, res) => {
     const { status, notes } = req.body;
     const applicants = readData(APPLICANTS_FILE);

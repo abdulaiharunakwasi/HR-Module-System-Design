@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://hr-module-system.onrender.com/api';
 
 // Switch between login and register tabs
 function switchTab(tab) {
