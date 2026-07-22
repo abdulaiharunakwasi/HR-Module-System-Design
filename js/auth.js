@@ -1,4 +1,7 @@
-const API_URL = 'https://hr-module-system.onrender.com/api';
+// ============================================
+// API URL - POINTING TO YOUR RENDER DEPLOYMENT
+// ============================================
+const API_URL = 'https://hr-module-system-design-1.onrender.com/api';
 
 // Switch between login and register tabs
 function switchTab(tab) {
