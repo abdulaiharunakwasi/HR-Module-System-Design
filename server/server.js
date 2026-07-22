@@ -7,7 +7,20 @@ const multer = require('multer');
 const auth = require('./auth');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
+
+// ============ CORS - FIXED ============
+app.use(cors({
+    origin: '*',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+app.use(express.static(path.join(__dirname, '..')));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // ============ MULTER CONFIGURATION ============
 const storage = multer.diskStorage({
@@ -40,20 +53,7 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-// ============ CORS MIDDLEWARE - UPDATED FOR RENDER ============
-app.use(cors({
-    origin: ['http://localhost:3000', 'https://hr-module-system.onrender.com'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
-app.use(express.static(path.join(__dirname, '..')));
-app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
-
-// ============ DATA FILE PATHS ============
+// Data file paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const APPLICANTS_FILE = path.join(DATA_DIR, 'applicants.json');
 const SHORTLISTED_FILE = path.join(DATA_DIR, 'shortlisted.json');
@@ -129,6 +129,7 @@ const writeData = (filePath, data) => {
 app.post('/api/auth/register', async (req, res) => {
     try {
         const { username, email, password, role, fullName, phone } = req.body;
+        console.log('Registration attempt:', { username, email, role });
         
         if (!username || !email || !password) {
             return res.status(400).json({ error: 'All fields are required' });
@@ -147,12 +148,14 @@ app.post('/api/auth/register', async (req, res) => {
             phone
         });
         
+        console.log('User registered successfully:', user.username);
         res.status(201).json({ 
             message: 'User created successfully', 
             user,
             redirect: user.role === 'candidate' ? '/candidate-dashboard.html' : '/dashboard.html'
         });
     } catch (error) {
+        console.error('Registration error:', error);
         res.status(400).json({ error: error.message });
     }
 });
@@ -160,14 +163,17 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
     try {
         const { username, password } = req.body;
+        console.log('Login attempt:', username);
         
         if (!username || !password) {
             return res.status(400).json({ error: 'Username and password required' });
         }
         
         const result = await auth.loginUser(username, password);
+        console.log('Login successful:', username);
         res.json(result);
     } catch (error) {
+        console.error('Login error:', error);
         res.status(401).json({ error: error.message });
     }
 });
@@ -232,32 +238,6 @@ app.post('/api/jobs', auth.authenticate, auth.isHR, (req, res) => {
     } catch (error) {
         console.error('Error posting job:', error);
         res.status(500).json({ error: 'Failed to post job' });
-    }
-});
-
-app.put('/api/jobs/:id', auth.authenticate, auth.isHR, (req, res) => {
-    try {
-        const jobs = readData(JOBS_FILE);
-        const index = jobs.findIndex(j => j.id === req.params.id);
-        if (index === -1) {
-            return res.status(404).json({ error: 'Job not found' });
-        }
-        jobs[index] = { ...jobs[index], ...req.body, updatedAt: new Date().toISOString() };
-        writeData(JOBS_FILE, jobs);
-        res.json(jobs[index]);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to update job' });
-    }
-});
-
-app.delete('/api/jobs/:id', auth.authenticate, auth.isHR, (req, res) => {
-    try {
-        let jobs = readData(JOBS_FILE);
-        jobs = jobs.filter(j => j.id !== req.params.id);
-        writeData(JOBS_FILE, jobs);
-        res.json({ message: 'Job deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to delete job' });
     }
 });
 
@@ -400,11 +380,7 @@ app.put('/api/applicants/:id/status', auth.authenticate, auth.isHR, (req, res) =
     }
     
     const applicant = applicants[applicantIndex];
-    const oldStatus = applicant.status;
     
-    console.log(`📝 Status change: ${applicant.fullName} from ${oldStatus} to ${status}`);
-    
-    // Update applicant status
     applicants[applicantIndex].status = status;
     applicants[applicantIndex].statusUpdatedBy = req.user.username;
     applicants[applicantIndex].statusUpdatedAt = new Date().toISOString();
@@ -412,7 +388,6 @@ app.put('/api/applicants/:id/status', auth.authenticate, auth.isHR, (req, res) =
         applicants[applicantIndex].notes = notes;
     }
     
-    // Handle SHORTLISTED status - ADD TO SHORTLISTED LIST
     if (status === 'shortlisted') {
         const alreadyShortlisted = shortlisted.some(s => s.id === applicant.id);
         if (!alreadyShortlisted) {
@@ -422,11 +397,9 @@ app.put('/api/applicants/:id/status', auth.authenticate, auth.isHR, (req, res) =
                 shortlistedBy: req.user.username
             });
             writeData(SHORTLISTED_FILE, shortlisted);
-            console.log(`✅ Added ${applicant.fullName} to shortlisted`);
         }
     }
     
-    // If status is 'hired' or 'rejected', remove from shortlisted and delete interview
     if (status === 'hired' || status === 'rejected') {
         const updatedShortlisted = shortlisted.filter(s => s.id !== req.params.id);
         writeData(SHORTLISTED_FILE, updatedShortlisted);
@@ -435,24 +408,20 @@ app.put('/api/applicants/:id/status', auth.authenticate, auth.isHR, (req, res) =
         if (interviewIndex !== -1) {
             interviews.splice(interviewIndex, 1);
             writeData(INTERVIEWS_FILE, interviews);
-            console.log(`✅ Interview removed for ${status} candidate: ${applicant.fullName}`);
         }
     }
     
-    // If status is 'pending', remove from shortlisted
     if (status === 'pending') {
         const updatedShortlisted = shortlisted.filter(s => s.id !== req.params.id);
         writeData(SHORTLISTED_FILE, updatedShortlisted);
     }
     
-    // If status is 'interview', make sure it's NOT in shortlisted
     if (status === 'interview') {
         const updatedShortlisted = shortlisted.filter(s => s.id !== req.params.id);
         writeData(SHORTLISTED_FILE, updatedShortlisted);
     }
     
     writeData(APPLICANTS_FILE, applicants);
-    console.log(`✅ Status updated: ${applicant.fullName} → ${status}`);
     res.json(applicants[applicantIndex]);
 });
 
@@ -504,15 +473,6 @@ app.post('/api/interviews', auth.authenticate, auth.isHR, (req, res) => {
     }
 });
 
-app.get('/api/interviews', auth.authenticate, auth.isHR, (req, res) => {
-    try {
-        const interviews = readData(INTERVIEWS_FILE);
-        res.json(interviews);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to load interviews' });
-    }
-});
-
 app.get('/api/interviews/my-interviews', auth.authenticate, (req, res) => {
     try {
         const interviews = readData(INTERVIEWS_FILE);
@@ -527,32 +487,6 @@ app.get('/api/interviews/my-interviews', auth.authenticate, (req, res) => {
     }
 });
 
-app.get('/api/interviews/:id', auth.authenticate, (req, res) => {
-    try {
-        const interviews = readData(INTERVIEWS_FILE);
-        const interview = interviews.find(i => i.id === req.params.id);
-        if (!interview) {
-            return res.status(404).json({ error: 'Interview not found' });
-        }
-        res.json(interview);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to load interview' });
-    }
-});
-
-app.delete('/api/interviews/:id', auth.authenticate, auth.isHR, (req, res) => {
-    try {
-        let interviews = readData(INTERVIEWS_FILE);
-        interviews = interviews.filter(i => i.id !== req.params.id);
-        writeData(INTERVIEWS_FILE, interviews);
-        res.json({ message: 'Interview deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to delete interview' });
-    }
-});
-
-// ============ SHORTLISTED ROUTES ============
-
 app.get('/api/shortlisted', auth.authenticate, auth.isHR, (req, res) => {
     try {
         const shortlisted = readData(SHORTLISTED_FILE);
@@ -565,8 +499,6 @@ app.get('/api/shortlisted', auth.authenticate, auth.isHR, (req, res) => {
         res.json([]);
     }
 });
-
-// ============ DASHBOARD STATS ============
 
 app.get('/api/dashboard/stats', auth.authenticate, auth.isHR, (req, res) => {
     try {
@@ -611,8 +543,6 @@ app.get('/api/dashboard/stats', auth.authenticate, auth.isHR, (req, res) => {
         res.status(500).json({ error: 'Failed to load stats' });
     }
 });
-
-// ============ DOWNLOAD CV ============
 
 app.get('/api/download-cv/:filename', (req, res) => {
     const filePath = path.join(__dirname, '..', 'uploads', 'cvs', req.params.filename);

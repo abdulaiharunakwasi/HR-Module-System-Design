@@ -64,6 +64,8 @@ function checkAuth() {
 
 // DOM Ready
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Auth.js loaded - API_URL:', API_URL);
+    
     // Check auth status
     if (window.location.pathname.includes('dashboard.html') || 
         window.location.pathname.includes('candidate-dashboard.html')) {
@@ -84,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             try {
+                console.log('Attempting login...');
                 const response = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -91,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 const data = await response.json();
+                console.log('Login response:', data);
                 
                 if (!response.ok) {
                     throw new Error(data.error || 'Login failed');
@@ -109,6 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }, 500);
             } catch (error) {
+                console.error('Login error:', error);
                 showToast('Login failed: ' + error.message, 'error');
             }
         });
@@ -127,6 +132,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('registerPassword').value;
             const role = document.getElementById('registerRole').value;
             
+            console.log('Register attempt:', { fullName, username, email, role });
+            
             // Validation
             if (!fullName || !username || !email || !password) {
                 showToast('Please fill in all required fields', 'error');
@@ -144,6 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             try {
+                console.log('Sending registration request...');
                 const response = await fetch(`${API_URL}/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -158,6 +166,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 
                 const data = await response.json();
+                console.log('Register response:', data);
                 
                 if (!response.ok) {
                     throw new Error(data.error || 'Registration failed');
@@ -174,6 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 1000);
                 
             } catch (error) {
+                console.error('Register error:', error);
                 showToast('Registration failed: ' + error.message, 'error');
             }
         });
