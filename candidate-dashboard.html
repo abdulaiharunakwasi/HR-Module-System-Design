@@ -745,9 +745,9 @@
 
 <script>
 // ============================================
-// API URL - CHANGED TO RENDER DEPLOYMENT
+// API URL - POINTING TO YOUR RENDER DEPLOYMENT
 // ============================================
-const API = 'https://hr-module-system.onrender.com/api';
+const API = 'https://hr-module-system-design-1.onrender.com/api';
 let currentUser = null;
 let allJobs = [];
 let myApplications = [];
@@ -758,17 +758,23 @@ let selectedFile = null;
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', async function() {
+    console.log('Candidate Dashboard loaded - API:', API);
     const token = localStorage.getItem('token');
     if (!token) {
         window.location.href = 'index.html';
         return;
     }
     
-    await loadProfile();
-    await loadJobs();
-    await loadApplications();
-    await loadMyInterviews();
-    setupEvents();
+    try {
+        await loadProfile();
+        await loadJobs();
+        await loadApplications();
+        await loadMyInterviews();
+        setupEvents();
+    } catch (error) {
+        console.error('Init error:', error);
+        showToast('Error loading data: ' + error.message, 'error');
+    }
 });
 
 // ============================================
@@ -783,6 +789,7 @@ async function loadMyInterviews() {
         });
         if (res.ok) {
             myInterviews = await res.json();
+            console.log('Interviews loaded:', myInterviews.length);
         } else {
             myInterviews = [];
         }
@@ -837,6 +844,7 @@ function setupEvents() {
             removeFile();
             await loadApplications();
         } catch (error) {
+            console.error('Submit error:', error);
             showToast('Error: ' + error.message, 'error');
         } finally {
             btn.disabled = false;
@@ -996,12 +1004,13 @@ async function loadApplications() {
         document.getElementById('appCount').textContent = `${myApplications.length} applications`;
         document.getElementById('appBadge').textContent = myApplications.length;
     } catch (error) {
+        console.error('Applications error:', error);
         showToast('Error loading applications: ' + error.message, 'error');
     }
 }
 
 // ============================================
-// GET INTERVIEW FOR APPLICATION - FIXED
+// GET INTERVIEW FOR APPLICATION
 // ============================================
 function getInterviewForApplication(app) {
     if (app.status === 'hired' || app.status === 'rejected') {
@@ -1017,7 +1026,7 @@ function getInterviewForApplication(app) {
 }
 
 // ============================================
-// RENDER APPLICATIONS - FIXED
+// RENDER APPLICATIONS
 // ============================================
 function renderApplications(apps) {
     const container = document.getElementById('appsList');

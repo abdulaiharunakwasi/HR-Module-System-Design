@@ -1,4 +1,4 @@
-const API_URL = 'https://hr-module-system.onrender.com';
+const API_URL = 'https://hr-module-system-design-1.onrender.com/api';
 let currentUser = null;
 let jobs = [];
 let applications = [];

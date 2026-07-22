@@ -34,6 +34,16 @@ if (!fs.existsSync(USERS_FILE)) {
             fullName: 'John Doe',
             phone: '+1234567890',
             createdAt: new Date().toISOString()
+        },
+        {
+            id: 'hr1',
+            username: 'hr_user',
+            password: bcrypt.hashSync('hr123', 10),
+            email: 'hr@hrsystem.com',
+            role: 'hr',
+            fullName: 'HR Manager',
+            phone: '+1234567890',
+            createdAt: new Date().toISOString()
         }
     ];
     fs.writeFileSync(USERS_FILE, JSON.stringify(defaultUsers, null, 2));

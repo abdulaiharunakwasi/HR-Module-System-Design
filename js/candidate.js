@@ -1,4 +1,7 @@
-const API_URL = 'https://hr-module-system.onrender.com';
+// ============================================
+// API URL - POINTING TO YOUR RENDER DEPLOYMENT
+// ============================================
+const API_URL = 'https://hr-module-system-design-1.onrender.com/api';
 let currentUser = null;
 let jobs = [];
 let applications = [];
@@ -128,7 +131,6 @@ function displayJobs(jobsToShow) {
                         ${job.requirements.map(req => `<span class="req-tag">${req}</span>`).join('')}
                     </div>
                     <div class="job-footer">
-                        <span class="salary">💰 ${job.salary}</span>
                         <button class="btn-apply" onclick="openApplyModal('${job.id}')">
                             Apply Now
                         </button>
@@ -311,7 +313,6 @@ function openApplyModal(jobId) {
             <span>🏢 ${job.department || 'Various'}</span>
             <span>📍 ${job.location}</span>
             <span>💼 ${job.type}</span>
-            <span>💰 ${job.salary}</span>
         </div>
     `;
     

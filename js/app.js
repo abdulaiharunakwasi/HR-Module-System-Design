@@ -1,4 +1,7 @@
-const API_URL = 'https://hr-module-system.onrender.com';
+// ============================================
+// API URL - POINTING TO YOUR RENDER DEPLOYMENT
+// ============================================
+const API_URL = 'https://hr-module-system-design-1.onrender.com/api';
 let currentTab = 'applicants';
 
 // DOM Elements
@@ -13,7 +16,7 @@ const filterPosition = document.getElementById('filterPosition');
 // Fetch all applicants
 async function fetchApplicants() {
     try {
-        const response = await fetch(`${API_URL}/api/applicants`);
+        const response = await fetch(`${API_URL}/applicants`);
         if (!response.ok) throw new Error('Failed to fetch applicants');
         return await response.json();
     } catch (error) {
@@ -25,7 +28,7 @@ async function fetchApplicants() {
 // Fetch shortlisted candidates
 async function fetchShortlisted() {
     try {
-        const response = await fetch(`${API_URL}/api/shortlisted`);
+        const response = await fetch(`${API_URL}/shortlisted`);
         if (!response.ok) throw new Error('Failed to fetch shortlisted');
         return await response.json();
     } catch (error) {
@@ -49,7 +52,7 @@ form.addEventListener('submit', async (e) => {
     };
     
     try {
-        const response = await fetch(`${API_URL}/api/applicants`, {
+        const response = await fetch(`${API_URL}/applicants`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
@@ -68,7 +71,7 @@ form.addEventListener('submit', async (e) => {
 // Shortlist an applicant
 async function shortlistApplicant(id) {
     try {
-        const response = await fetch(`${API_URL}/api/shortlist/${id}`, {
+        const response = await fetch(`${API_URL}/shortlist/${id}`, {
             method: 'POST'
         });
         
@@ -87,7 +90,7 @@ async function shortlistApplicant(id) {
 // Remove from shortlist
 async function removeFromShortlist(id) {
     try {
-        const response = await fetch(`${API_URL}/api/shortlist/${id}`, {
+        const response = await fetch(`${API_URL}/shortlist/${id}`, {
             method: 'DELETE'
         });
         
@@ -108,7 +111,7 @@ async function deleteApplicant(id) {
     if (!confirm('Are you sure you want to delete this applicant?')) return;
     
     try {
-        const response = await fetch(`${API_URL}/api/applicants/${id}`, {
+        const response = await fetch(`${API_URL}/applicants/${id}`, {
             method: 'DELETE'
         });
         
